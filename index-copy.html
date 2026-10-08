@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>p5.js Instance inside Maptastic</title>
+  <style>
+    body, html { margin: 0; padding: 0; background: #000; overflow: hidden; width: 100%; height: 100%; }
+    /* The container for your projection layer */
+    #projection-container { width: 800px; height: 600px; }
+  </style>
+  <!-- Load Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/maptastic@0.1.0/dist/maptastic.min.js"></script>
+</head>
+<body>
+
+  <!-- 1. The Target Canvas Element Container -->
+  <div id="projection-container"></div>
+
+  <script>
+    // 2. Define your p5 Sketch using Instance Mode syntax (passing 'p')
+    const sketch = (p) => {
+      p.setup = () => {
+        // Create canvas inside the specified element size
+        let canvas = p.createCanvas(800, 600);
+        
+        // Give your canvas element a specific ID so Maptastic can find it
+        canvas.id('p5-canvas');
+        
+        p.background(0);
+        
+        // 3. Initialize Maptastic once the canvas element exists in the DOM
+        Maptastic('p5-canvas');
+      };
+
+      p.draw = () => {
+        p.background(0, 10); // leave trails
+        
+        // Example dynamic visuals
+        p.fill(p.random(255), p.random(255), 255);
+        p.noStroke();
+        p.ellipse(p.mouseX, p.mouseY, 50, 50);
+        
+        p.stroke(255);
+        p.noFill();
+        p.rect(10, 10, p.width - 20, p.height - 20);
+      };
+    };
+
+    // 4. Instantiate the p5 sketch into your container element
+    const myP5Instance = new p5(sketch, 'projection-container');
+  </script>
+</body>
+</html>
